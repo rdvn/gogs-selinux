@@ -12,6 +12,7 @@ require {
 	type bin_t;
 	type sysctl_net_t;
 	type ntop_port_t;
+	type http_port_t;
 
 	class file { map };
 	class tcp_socket { name_bind name_connect };
@@ -58,6 +59,7 @@ sysnet_dns_name_resolve(gogs_t)
 # Allow network socket
 allow gogs_t self:tcp_socket { accept listen };
 allow gogs_t ntop_port_t:tcp_socket { name_bind name_connect };
+allow gogs_t http_port_t:tcp_socket name_connect;
 
 # Allow writing ssh keys
 allow gogs_t ssh_home_t:dir rw_dir_perms;
@@ -70,6 +72,7 @@ allow gogs_t gogs_home_t:file { rw_file_perms setattr_file_perms };
 # Allow writing to data directory
 allow gogs_t gogs_data_t:dir  manage_dir_perms;
 allow gogs_t gogs_data_t:file { manage_file_perms map };
+allow gogs_t gogs_data_t:lnk_file { create_lnk_file_perms delete_lnk_file_perms };
 
 # Allow reading configuration
 allow gogs_t gogs_conf_t:dir  list_dir_perms;
@@ -79,6 +82,7 @@ allow gogs_t gogs_conf_t:file read_file_perms;
 allow gogs_t gogs_log_t:file  manage_file_perms;
 allow gogs_t gogs_log_t:dir   manage_dir_perms;
 
+# Allow creating .gitignore file in home directory...
 allow gogs_t user_home_dir_t:dir { rw_dir_perms create_file_perms };
 allow gogs_t user_home_dir_t:file { manage_file_perms map };
 
